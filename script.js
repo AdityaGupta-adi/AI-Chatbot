@@ -1,145 +1,379 @@
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
+
 const sendBtn = document.getElementById("sendBtn");
-const clearBtn = document.getElementById("clearBtn");
+const themeBtn = document.getElementById("themeBtn");
 
-sendBtn.addEventListener("click", sendMessage);
+const newChatBtn = document.getElementById("newChatBtn");
 
-userInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+const historyList = document.getElementById("historyList");
+
+const suggestionButtons =
+document.querySelectorAll(".suggestion");
+
+let chats =
+JSON.parse(localStorage.getItem("chatHistory")) || [];
+
+let darkMode = true;
+
+/* =========================
+AUTO RESIZE
+========================= */
+
+userInput.addEventListener("input",()=>{
+
+userInput.style.height="55px";
+
+userInput.style.height=userInput.scrollHeight+"px";
+
 });
 
-function sendMessage() {
+/* =========================
+THEME
+========================= */
 
-    const message = userInput.value.trim();
+themeBtn.addEventListener("click",()=>{
 
-    if (message === "") return;
+document.body.classList.toggle("light");
 
-    chatBox.innerHTML += `
-        <div class="user-message">
-            ${message}
-        </div>
-    `;
+darkMode=!darkMode;
 
-    userInput.value = "";
+themeBtn.textContent=darkMode?"🌙":"☀️";
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+});
 
-    setTimeout(() => {
+/* =========================
+SUGGESTIONS
+========================= */
 
-        botReply(message);
+suggestionButtons.forEach(button=>{
 
-    }, 700);
+button.addEventListener("click",()=>{
+
+userInput.value=button.innerText;
+
+sendMessage();
+
+});
+
+});
+
+/* =========================
+ENTER
+========================= */
+
+userInput.addEventListener("keydown",(e)=>{
+
+if(e.key==="Enter" && !e.shiftKey){
+
+e.preventDefault();
+
+sendMessage();
 
 }
-
-function botReply(message){
-
-    let reply = "";
-
-    const text = message.toLowerCase();
-
-    if(text.includes("hello") || text.includes("hi")){
-        reply = "👋 Hello! How can I help you today?";
-    }
-    else if(text.includes("how are you")){
-        reply = "😊 I'm doing great! Thanks for asking.";
-    }
-    else if(text.includes("your name")){
-        reply = "🤖 I'm your AI Chatbot.";
-    }
-    else if(text.includes("bye")){
-        reply = "👋 Goodbye! Have a great day.";
-    }
-    else if(text.includes("time")){
-        reply = "🕒 Current Time: " + new Date().toLocaleTimeString();
-    }
-    else if(text.includes("date")){
-        reply = "📅 Today is " + new Date().toLocaleDateString();
-    }
-    else{
-        reply = "🤖 Sorry, I don't understand that yet.";
-    }
-
-  chatBox.innerHTML += `
-        <div class="bot-message">
-            ${reply}
-        </div>
-    `;
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-clearBtn.addEventListener("click", () => {
-
-    chatBox.innerHTML = `
-        <div class="bot-message">
-            👋 Chat cleared. Ask me anything!
-        </div>
-    `;
 
 });
 /* =========================
-   TYPING EFFECT
+SEND MESSAGE
 ========================= */
 
-function showTyping() {
+sendBtn.addEventListener("click", sendMessage);
 
-    chatBox.innerHTML += `
-        <div class="bot-message" id="typing">
-            ⌨️ AI is typing...
-        </div>
-    `;
+function sendMessage(){
 
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+const text=userInput.value.trim();
 
-function removeTyping() {
+if(text==="") return;
 
-    const typing = document.getElementById("typing");
+addMessage(text,"user");
 
-    if (typing) {
-        typing.remove();
-    }
+userInput.value="";
 
-}
+userInput.style.height="55px";
 
-/* Override sendMessage with typing animation */
+showTyping();
 
-function sendMessage() {
+setTimeout(()=>{
 
-    const message = userInput.value.trim();
+removeTyping();
 
-    if (message === "") return;
+const reply=getBotReply(text);
 
-    chatBox.innerHTML += `
-        <div class="user-message">
-            ${message}
-        </div>
-    `;
+addMessage(reply,"bot");
 
-    userInput.value = "";
+saveHistory();
 
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    showTyping();
-
-    setTimeout(() => {
-
-        removeTyping();
-
-        botReply(message);
-
-    }, 1000);
+},1000);
 
 }
 
-/* Welcome Message */
+/* =========================
+ADD MESSAGE
+========================= */
 
-window.onload = () => {
+function addMessage(text,type){
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+const div=document.createElement("div");
+
+div.className=type+"-message";
+
+div.innerHTML=`
+
+<div class="avatar">
+
+${type==="user"?"🧑":"🤖"}
+
+</div>
+
+<div class="message">
+
+${text}
+
+</div>
+
+`;
+
+chatBox.appendChild(div);
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+}
+
+/* =========================
+TYPING
+========================= */
+
+function showTyping(){
+
+const div=document.createElement("div");
+
+div.className="bot-message";
+
+div.id="typing";
+
+div.innerHTML=`
+
+<div class="avatar">🤖</div>
+
+<div class="message">
+
+AI is typing...
+
+</div>
+
+`;
+
+chatBox.appendChild(div);
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+}
+
+function removeTyping(){
+
+const typing=document.getElementById("typing");
+
+if(typing) typing.remove();
+
+}
+function getBotReply(text){
+
+const msg=text.toLowerCase();
+
+if(msg.includes("hello") || msg.includes("hi"))
+return "👋 Hello! How can I help you today?";
+
+if(msg.includes("how are you"))
+return "😊 I'm doing great. Thanks for asking!";
+
+if(msg.includes("time"))
+return "🕒 Current Time: " + new Date().toLocaleTimeString();
+
+if(msg.includes("date"))
+return "📅 Today: " + new Date().toLocaleDateString();
+
+if(msg.includes("javascript"))
+return "JavaScript is a powerful programming language used for web development.";
+
+if(msg.includes("html"))
+return "HTML is the standard markup language used to create web pages.";
+
+if(msg.includes("css"))
+return "CSS is used to style and design web pages.";
+
+return "🤖 I understand your message. In V3 we'll connect Gemini AI so I can answer almost any question intelligently.";
+}
+
+/* =========================
+SAVE HISTORY
+========================= */
+
+function saveHistory(){
+
+localStorage.setItem("chatHistory",chatBox.innerHTML);
+
+}
+
+window.onload=()=>{
+
+const saved=localStorage.getItem("chatHistory");
+
+if(saved){
+
+chatBox.innerHTML=saved;
+
+}
+
+chatBox.scrollTop=chatBox.scrollHeight;
 
 };
+
+/* =========================
+NEW CHAT
+========================= */
+
+newChatBtn.addEventListener("click",()=>{
+
+chatBox.innerHTML=`
+<div class="bot-message">
+<div class="avatar">🤖</div>
+<div class="message">
+Hello 👋<br>New chat started.
+</div>
+</div>
+`;
+
+saveHistory();
+
+});
+
+/* =========================
+CLEAR HISTORY
+========================= */
+
+clearHistoryBtn.addEventListener("click",()=>{
+
+localStorage.removeItem("chatHistory");
+
+chatBox.innerHTML="";
+
+});
+/* =========================
+COPY CHAT
+========================= */
+
+const copyChatBtn = document.getElementById("copyChatBtn");
+
+copyChatBtn.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(chatBox.innerText);
+
+alert("✅ Chat copied successfully!");
+
+});
+
+/* =========================
+DOWNLOAD CHAT
+========================= */
+
+const downloadChatBtn=document.getElementById("downloadChatBtn");
+
+downloadChatBtn.addEventListener("click",()=>{
+
+const blob=new Blob([chatBox.innerText],{type:"text/plain"});
+
+const link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="AI-Chat.txt";
+
+link.click();
+
+});
+
+/* =========================
+TEXT TO SPEECH
+========================= */
+
+const readChatBtn=document.getElementById("readChatBtn");
+
+const stopReadBtn=document.getElementById("stopReadBtn");
+
+readChatBtn.addEventListener("click",()=>{
+
+speechSynthesis.cancel();
+
+const speech=new SpeechSynthesisUtterance(chatBox.innerText);
+
+speech.lang="en-US";
+
+speech.rate=1;
+
+speech.pitch=1;
+
+speechSynthesis.speak(speech);
+
+});
+
+stopReadBtn.addEventListener("click",()=>{
+
+speechSynthesis.cancel();
+
+});
+
+/* =========================
+VOICE INPUT
+========================= */
+
+const voiceBtn=document.getElementById("voiceBtn");
+
+const SpeechRecognition=
+window.SpeechRecognition||
+window.webkitSpeechRecognition;
+
+if(SpeechRecognition){
+
+const recognition=new SpeechRecognition();
+
+recognition.lang="en-US";
+
+recognition.interimResults=false;
+
+recognition.maxAlternatives=1;
+
+voiceBtn.addEventListener("click",()=>{
+
+recognition.start();
+
+});
+
+recognition.onresult=(event)=>{
+
+userInput.value=event.results[0][0].transcript;
+
+sendMessage();
+
+};
+
+}else{
+
+voiceBtn.style.display="none";
+
+}
+
+/* =========================
+AUTO SCROLL
+========================= */
+
+const observer=new MutationObserver(()=>{
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+});
+
+observer.observe(chatBox,{
+childList:true
+});
