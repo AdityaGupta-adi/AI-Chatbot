@@ -416,6 +416,11 @@ text:promptText
 
 const data = await response.json();
 
+if (!response.ok) {
+    console.log(data);
+    return "❌ API Error: " + (data.error?.message || "Unknown Error");
+}
+
 return data.candidates[0].content.parts[0].text;
 
 }
