@@ -1,3 +1,12 @@
+let API_KEY = localStorage.getItem("gemini_api_key") || "";
+
+if (!API_KEY) {
+  API_KEY = prompt("Enter your Gemini API Key");
+  if (API_KEY) {
+    localStorage.setItem("gemini_api_key", API_KEY);
+  }
+}
+
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
 
