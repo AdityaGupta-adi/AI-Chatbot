@@ -104,17 +104,17 @@ userInput.style.height="55px";
 
 showTyping();
 
-setTimeout(()=>{
+setTimeout(async () => {
 
 removeTyping();
 
 const reply = await askGemini(text);
 
-addMessage(reply,"bot");
+addMessage(reply, "bot");
 
 saveHistory();
 
-},1000);
+}, 1000);
 
 }
 
