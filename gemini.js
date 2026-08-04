@@ -7,7 +7,7 @@ if (!API_KEY) {
     }
 }
 
-async function askGemini(promptText) {
+async function askGemini(chatHistory) {
 
     const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/interactions",
@@ -18,11 +18,14 @@ async function askGemini(promptText) {
                 "x-goog-api-key": API_KEY
             },
             body: JSON.stringify({
-                model: "gemini-3.6-flash",
-                input: promptText
-            })
-        }
+            model: "gemini-3.6-flash",
+            input: chatHistory.map(msg => ({
+            role: msg.role,
+            content: msg.text
+    }))
+})
     );
+}
 
     const data = await response.json();
 
