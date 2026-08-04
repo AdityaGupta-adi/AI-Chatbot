@@ -25,7 +25,6 @@ async function askGemini(promptText) {
     );
 
     const data = await response.json();
-    alert(JSON.stringify(data, null, 2));
 
     console.log("Gemini Response:", data);
 
@@ -33,20 +32,25 @@ async function askGemini(promptText) {
         throw new Error(data.error?.message || "API Error");
     }
 
-    if (
-    data.steps &&
-    data.steps.length > 0 &&
-    data.steps[0].content &&
-    data.steps[0].content.length > 0
-){
-    const textItem = data.steps[0].content.find(item => item.type === "text");
+    if (data.steps) {
 
-if (textItem) {
-    return textItem.text;
-}
+    for (const step of data.steps) {
 
-return "❌ No text found.";
-}
+        if (step.content) {
+
+            const textItem = step.content.find(
+                item => item.type === "text"
+            );
+
+            if (textItem) {
+                return textItem.text;
+            }
+
+        }
+
+    }
+
+    }
 
 if (data.output_text) {
     return data.output_text;
