@@ -18,17 +18,17 @@ async function askGemini(chatHistory) {
                 "x-goog-api-key": API_KEY
             },
             body: JSON.stringify({
-            model: "gemini-3.6-flash",
-            input: chatHistory.map(msg => ({
-            role: msg.role,
-            content: msg.text
+    model: "gemini-3.6-flash",
+    input: chatHistory.map(msg => ({
+        role: msg.role,
+        content: msg.text
     }))
 })
+        }
     );
-}
 
     const data = await response.json();
-
+}
     console.log("Gemini Response:", data);
 
     if (!response.ok) {
