@@ -37,8 +37,14 @@ async function askGemini(promptText) {
     data.steps.length > 0 &&
     data.steps[0].content &&
     data.steps[0].content.length > 0
-) {
-    return data.steps[0].content[0].text;
+){
+    const textItem = data.steps[0].content.find(item => item.type === "text");
+
+if (textItem) {
+    return textItem.text;
+}
+
+return "❌ No text found.";
 }
 
 if (data.output_text) {
