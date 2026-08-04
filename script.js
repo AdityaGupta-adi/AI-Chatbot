@@ -25,18 +25,8 @@ async function sendMessage() {
     showTyping();
 
     try {
-
-        chatHistory.push({
-    role: "user",
-    text: text
-});
-
-const reply = await askGemini(chatHistory);
-
-chatHistory.push({
-    role: "assistant",
-    text: reply
-});
+        
+        const reply = await askGemini(text);
 
         removeTyping();
 
