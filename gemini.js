@@ -7,7 +7,7 @@ if (!API_KEY) {
     }
 }
 
-async function askGemini(chatHistory) {
+async function askGemini(promptText){
 
     const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/interactions",
@@ -19,16 +19,12 @@ async function askGemini(chatHistory) {
             },
             body: JSON.stringify({
     model: "gemini-3.6-flash",
-    input: chatHistory.map(msg => ({
-        role: msg.role,
-        content: msg.text
-    }))
+    input: promptText
 })
-        }
-    );
+    })
+}
 
     const data = await response.json();
-}
     console.log("Gemini Response:", data);
 
     if (!response.ok) {
