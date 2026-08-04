@@ -1,3 +1,4 @@
+let chatHistory = [];
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
@@ -25,7 +26,17 @@ async function sendMessage() {
 
     try {
 
-        const reply = await askGemini(text);
+        chatHistory.push({
+    role: "user",
+    text: text
+});
+
+const reply = await askGemini(chatHistory);
+
+chatHistory.push({
+    role: "assistant",
+    text: reply
+});
 
         removeTyping();
 
