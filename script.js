@@ -64,13 +64,44 @@ function addMessage(text, type) {
         </div>
 
         <div class="message">
-            ${formatMessage(text)}
+            ${type === "bot" ? "" : formatMessage(text)}
         </div>
     `;
 
     chatBox.appendChild(div);
+    if(type === "bot"){
+
+    const msg = div.querySelector(".message");
+
+    typeMessage(msg, text);
+
+    }
 
     chatBox.scrollTop = chatBox.scrollHeight;
+
+}
+
+async function typeMessage(element, text) {
+
+    element.innerHTML = "";
+
+    let i = 0;
+
+    while (i < text.length) {
+
+        element.innerHTML = formatMessage(
+            text.substring(0, i + 1)
+        );
+
+        await new Promise(resolve =>
+            setTimeout(resolve, 15)
+        );
+
+        i++;
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+    }
 
 }
 
