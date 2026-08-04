@@ -377,50 +377,32 @@ voiceBtn.style.display="none";
 AUTO SCROLL
 ========================= */
 
-const observer=new MutationObserver(()=>{
+async function askGemini(promptText) {
 
-chatBox.scrollTop=chatBox.scrollHeight;
+    const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/interactions",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-goog-api-key": API_KEY
+            },
+            body: JSON.stringify({
+                model: "gemini-3.6-flash",
+                input: promptText
+            })
+        }
+    );
 
-});
+    const data = await response.json();
 
-observer.observe(chatBox,{
-childList:true
-});
-
-async function askGemini(promptText){
-alert(API_KEY);
-const response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=" + API_KEY,
-{
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-contents:[
-{
-parts:[
-{
-text:promptText
-}
-]
-}
-]
-
-})
-
-});
-
-const data = await response.json();
-
-if (!response.ok) {
     console.log(data);
-    return "❌ API Error: " + (data.error?.message || "Unknown Error");
+
+    if (!response.ok) {
+        return "❌ " + (data.error?.message || "Unknown Error");
+    }
+
+    return data.output_text;
 }
 
-return data.candidates[0].content.parts[0].text;
 
-}
