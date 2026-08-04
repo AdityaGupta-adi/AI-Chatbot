@@ -364,36 +364,4 @@ voiceBtn.style.display="none";
 
 }
 
-/* =========================
-AUTO SCROLL
-========================= */
-
-async function askGemini(promptText) {
-
-    const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/interactions",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-goog-api-key": API_KEY
-            },
-            body: JSON.stringify({
-                model: "gemini-3.6-flash",
-                input: promptText
-            })
-        }
-    );
-
-    const data = await response.json();
-
-    alert(JSON.stringify(data));
-
-    if (!response.ok) {
-        return "❌ " + (data.error?.message || "Unknown Error");
-    }
-
-    return data.output_text;
-}
-
 
