@@ -64,7 +64,7 @@ function addMessage(text, type) {
         </div>
 
         <div class="message">
-            ${text}
+            ${formatMessage(text)}
         </div>
     `;
 
@@ -100,6 +100,32 @@ function removeTyping() {
     const typing = document.getElementById("typing");
 
     if (typing) typing.remove();
+
+}
+
+function formatMessage(text){
+
+    text = text.replace(
+        /\*\*(.*?)\*\*/g,
+        "<b>$1</b>"
+    );
+
+    text = text.replace(
+        /\*(.*?)\*/g,
+        "<i>$1</i>"
+    );
+
+    text = text.replace(
+        /```([\s\S]*?)```/g,
+        "<pre><code>$1</code></pre>"
+    );
+
+    text = text.replace(
+        /\n/g,
+        "<br>"
+    );
+
+    return text;
 
 }
 
