@@ -396,7 +396,7 @@ async function askGemini(promptText) {
 
     const data = await response.json();
 
-    console.log(data);
+    alert(JSON.stringify(data));
 
     if (!response.ok) {
         return "❌ " + (data.error?.message || "Unknown Error");
