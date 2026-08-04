@@ -32,9 +32,18 @@ async function askGemini(promptText) {
         throw new Error(data.error?.message || "API Error");
     }
 
-    if (data.output_text) {
-        return data.output_text;
-    }
+    if (
+    data.steps &&
+    data.steps.length > 0 &&
+    data.steps[0].content &&
+    data.steps[0].content.length > 0
+) {
+    return data.steps[0].content[0].text;
+}
 
-    return JSON.stringify(data, null, 2);
+if (data.output_text) {
+    return data.output_text;
+}
+
+return "❌ No response received.";
 }
