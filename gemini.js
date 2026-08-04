@@ -25,6 +25,7 @@ async function askGemini(promptText) {
     );
 
     const data = await response.json();
+    alert(JSON.stringify(data, null, 2));
 
     console.log("Gemini Response:", data);
 
