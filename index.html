@@ -4,9 +4,10 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Chatbot V2 Premium</title>
+<title>AI Chatbot V3 Premium</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -17,7 +18,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
 
 </head>
 
@@ -25,19 +29,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 <div class="app">
 
-<!-- Sidebar -->
-
-<div class="sidebar">
+<aside class="sidebar">
 
 <div class="logo">
 
 <h2>🤖 AI Chatbot</h2>
 
-<p>Premium V2</p>
+<span>Premium V3</span>
 
 </div>
 
-<button id="newChatBtn" class="sidebar-btn">
+<button id="newChatBtn">
 
 <i class="fa-solid fa-plus"></i>
 
@@ -45,7 +47,7 @@ New Chat
 
 </button>
 
-<button id="exportBtn" class="sidebar-btn">
+<button id="exportBtn">
 
 <i class="fa-solid fa-download"></i>
 
@@ -53,7 +55,7 @@ Export Chat
 
 </button>
 
-<button id="clearHistoryBtn" class="sidebar-btn">
+<button id="clearBtn">
 
 <i class="fa-solid fa-trash"></i>
 
@@ -61,29 +63,25 @@ Clear History
 
 </button>
 
-<div class="history-title">
+<div class="history">
 
-Recent Chats
+<h3>Recent Chats</h3>
 
-</div>
-
-<div id="historyList">
+<div id="historyList"></div>
 
 </div>
 
-</div>
+</aside>
 
-<!-- Main Chat -->
+<main class="chat-area">
 
-<div class="main-chat">
+<header>
 
-<div class="topbar">
-
-<h1>
+<h2>
 
 🤖 AI Assistant
 
-</h1>
+</h2>
 
 <button id="themeBtn">
 
@@ -91,7 +89,7 @@ Recent Chats
 
 </button>
 
-</div>
+</header>
 
 <div id="chatBox" class="chat-box">
 
@@ -105,17 +103,7 @@ Recent Chats
 
 <div class="message">
 
-<h4>AI Assistant</h4>
-
-<p>
-
-Hello 👋
-
-I'm your Premium AI Chatbot.
-
-How can I help you today?
-
-</p>
+Hello 👋 I'm your Premium AI Assistant.
 
 </div>
 
@@ -129,7 +117,7 @@ How can I help you today?
 </button>
 
 <button class="suggestion">
-🌦 Weather Today
+🌦️ Weather Today
 </button>
 
 <button class="suggestion">
@@ -152,76 +140,39 @@ rows="1"></textarea>
 <div class="action-buttons">
 
 <button id="voiceBtn" title="Voice Input">
-
 🎤
-
 </button>
 
 <button id="sendBtn" title="Send">
-
 <i class="fa-solid fa-paper-plane"></i>
-
 </button>
 
 </div>
 
 </div>
 
-<div class="bottom-tools">
-
-<button id="copyChatBtn">
-
-📋 Copy Chat
-
-</button>
-
-<button id="downloadChatBtn">
-
-📥 Download
-
-</button>
-
-<button id="readChatBtn">
-
-🔊 Read
-
-</button>
-
-<button id="stopReadBtn">
-
-⏹ Stop
-
-</button>
-
-</div>
 <footer class="footer">
 
-<p>
-⚡ Powered by AI Chatbot V2 Premium
-</p>
+<p>⚡ Powered by Gemini 3.6 Flash</p>
 
-<p>
-Made with 💗 by Aditya Gupta
-</p>
+<p>Made with 🤍 by Aditya Gupta</p>
 
 </footer>
 
-</div>
+</main>
 
 </div>
 
-<!-- Marked.js (Markdown Support) -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-<!-- Prism.js (Code Highlighting) -->
-<link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
 
 <script src="gemini.js"></script>
+
 <script src="script.js"></script>
 
 </body>
+
 </html>
