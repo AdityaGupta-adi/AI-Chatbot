@@ -1,31 +1,42 @@
+// ===============================
+// AI Chatbot V5 Premium
+// Core Setup
+// ===============================
+
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
+
 const sendBtn = document.getElementById("sendBtn");
+const voiceBtn = document.getElementById("voiceBtn");
 
 const themeBtn = document.getElementById("themeBtn");
+const exportBtn = document.getElementById("exportBtn");
+
 const newChatBtn = document.getElementById("newChatBtn");
 const clearBtn = document.getElementById("clearBtn");
 
-const suggestionButtons =
+const searchChat = document.getElementById("searchChat");
+
+const historyList = document.getElementById("historyList");
+
+const suggestions =
 document.querySelectorAll(".suggestion");
 
-let messages = [];
+let chatHistory = [];
 
-/* =========================
-AUTO RESIZE
-========================= */
+let typingSpeed = 15;
 
+let darkMode = true;
+
+let speaking = false;
 userInput.addEventListener("input",()=>{
 
 userInput.style.height="55px";
-userInput.style.height=userInput.scrollHeight+"px";
+
+userInput.style.height=
+userInput.scrollHeight+"px";
 
 });
-
-/* =========================
-ENTER KEY
-========================= */
-
 userInput.addEventListener("keydown",(e)=>{
 
 if(e.key==="Enter" && !e.shiftKey){
@@ -37,18 +48,7 @@ sendMessage();
 }
 
 });
-
-/* =========================
-SEND BUTTON
-========================= */
-
-sendBtn.addEventListener("click",sendMessage);
-
-/* =========================
-SUGGESTIONS
-========================= */
-
-suggestionButtons.forEach(btn=>{
+suggestions.forEach(btn=>{
 
 btn.onclick=()=>{
 
@@ -59,146 +59,195 @@ sendMessage();
 };
 
 });
+sendBtn.onclick=sendMessage;
 
-/* =========================
-NEW CHAT
-========================= */
+newChatBtn.onclick=newChat;
 
-newChatBtn.onclick=()=>{
-
-messages=[];
-
-chatBox.innerHTML="";
-
-addMessage(
-"Hello 👋 I'm your Premium AI Assistant.",
-"bot"
-);
-
-};
-
-/* =========================
-CLEAR CHAT
-========================= */
-
-clearBtn.onclick=()=>{
-
-messages=[];
-
-chatBox.innerHTML="";
-
-};
-/* =========================
-SEND MESSAGE
-========================= */
+clearBtn.onclick=clearChat;
+// ===============================
+// SEND MESSAGE
+// ===============================
 
 async function sendMessage(){
 
 const text=userInput.value.trim();
 
-if(!text) return;
+if(text==="") return;
 
 addMessage(text,"user");
 
-messages.push({
+chatHistory.push({
+
 role:"user",
+
 text:text
+
 });
 
 userInput.value="";
+
 userInput.style.height="55px";
 
 showTyping();
 
-const reply = await askGemini(text);
+try{
 
-// Typing animation ko kam se kam 700ms dikhane ke liye
-await new Promise(resolve => setTimeout(resolve, 700));
+const reply=await askGemini(text);
 
-const typing=document.getElementById("typing");
-
-if(typing) typing.remove();
+removeTyping();
 
 await streamMessage(reply);
 
-messages.push({
+chatHistory.push({
+
 role:"assistant",
+
 text:reply
+
 });
+
+saveChat();
+
+}catch(err){
+
+removeTyping();
+
+addMessage(
+
+"❌ "+err.message,
+
+"bot"
+
+);
+
+console.error(err);
 
 }
 
-/* =========================
-ADD MESSAGE
-========================= */
+}
+// ===============================
+// ADD MESSAGE
+// ===============================
 
 function addMessage(text,type){
 
 const div=document.createElement("div");
 
-div.className=type+"-message";
+div.className=
+
+type==="user"
+
+?
+
+"userMessage"
+
+:
+
+"botMessage";
 
 div.innerHTML=`
+
 <div class="avatar">
+
 ${type==="user"?"🧑":"🤖"}
+
 </div>
 
 <div class="message">
+
 ${formatMessage(text)}
+
 </div>
+
 `;
 
 chatBox.appendChild(div);
 
-chatBox.scrollTop=chatBox.scrollHeight;
+chatBox.scrollTop=
+
+chatBox.scrollHeight;
 
 }
+// ===============================
+// AUTO SCROLL
+// ===============================
 
-/* =========================
-TYPING
-========================= */
+function scrollBottom(){
+
+chatBox.scrollTop=
+
+chatBox.scrollHeight;
+
+}
+// ===============================
+// SHOW TYPING
+// ===============================
 
 function showTyping(){
 
 const div=document.createElement("div");
 
-div.className="bot-message";
+div.className="botMessage";
 
 div.id="typing";
 
 div.innerHTML=`
+
 <div class="avatar">🤖</div>
+
 <div class="message">
-Thinking...
+
+<div class="typingDots">
+
+<span></span>
+
+<span></span>
+
+<span></span>
+
 </div>
+
+</div>
+
 `;
 
 chatBox.appendChild(div);
 
-chatBox.scrollTop=chatBox.scrollHeight;
+scrollBottom();
 
 }
+
+// ===============================
+// REMOVE TYPING
+// ===============================
 
 function removeTyping(){
 
 const typing=document.getElementById("typing");
 
-if(typing) typing.remove();
+if(typing){
+
+typing.remove();
 
 }
+
+}
+// ===============================
+// STREAM MESSAGE
+// ===============================
 
 async function streamMessage(text){
 
 const div=document.createElement("div");
 
-div.className="bot-message";
+div.className="botMessage";
 
 div.innerHTML=`
+
 <div class="avatar">🤖</div>
 
 <div class="message"></div>
 
-<button class="copyBtn">📋 Copy</button>
 `;
 
 chatBox.appendChild(div);
@@ -207,111 +256,257 @@ const msg=div.querySelector(".message");
 
 for(let i=0;i<text.length;i++){
 
-msg.innerHTML=formatMessage(text.substring(0,i+1));
+msg.innerHTML=text.substring(0,i+1);
 
-chatBox.scrollTop=chatBox.scrollHeight;
+scrollBottom();
 
-await new Promise(r=>setTimeout(r,12));
+await new Promise(resolve=>
+
+setTimeout(resolve,typingSpeed)
+
+);
 
 }
 
-div.querySelector(".copyBtn").onclick=()=>{
+// Markdown Render
+
+msg.innerHTML=formatMessage(text);
+
+// Syntax Highlight
+
+if(window.Prism){
+
+Prism.highlightAllUnder(msg);
+
+}
+
+// Copy Button
+
+const copy=document.createElement("button");
+
+copy.className="copyBtn";
+
+copy.textContent="📋 Copy";
+
+copy.onclick=()=>{
 
 navigator.clipboard.writeText(text);
 
-alert("Copied!");
+copy.textContent="✅ Copied";
+
+setTimeout(()=>{
+
+copy.textContent="📋 Copy";
+
+},2000);
 
 };
 
+div.appendChild(copy);
+
+scrollBottom();
+
 }
-/* =========================
-FORMAT MESSAGE
-========================= */
+// ===============================
+// FORMAT MESSAGE
+// ===============================
 
 function formatMessage(text){
 
 if(window.marked){
 
-text = marked.parse(text);
+return marked.parse(text);
 
 }
 
 return text;
 
 }
-
-/* =========================
-THEME
-========================= */
+// ===============================
+// THEME TOGGLE
+// ===============================
 
 themeBtn.onclick=()=>{
 
+darkMode=!darkMode;
+
 document.body.classList.toggle("light");
 
-themeBtn.textContent=
-document.body.classList.contains("light")
-? "☀️"
-: "🌙";
+localStorage.setItem(
 
-};
+"theme",
 
-/* =========================
-EXPORT CHAT
-========================= */
+darkMode?"dark":"light"
 
-document.getElementById("exportBtn").onclick=()=>{
-
-const blob=new Blob(
-[chatBox.innerText],
-{type:"text/plain"}
 );
 
-const link=document.createElement("a");
-
-link.href=URL.createObjectURL(blob);
-
-link.download="AI-Chat.txt";
-
-link.click();
-
 };
 
-/* =========================
-VOICE INPUT
-========================= */
+// ===============================
+// LOAD THEME
+// ===============================
 
-const SpeechRecognition=
-window.SpeechRecognition||
-window.webkitSpeechRecognition;
+const savedTheme=
 
-if(SpeechRecognition){
+localStorage.getItem("theme");
 
-const recognition=new SpeechRecognition();
+if(savedTheme==="light"){
 
-recognition.lang="en-US";
+document.body.classList.add("light");
 
-document.getElementById("voiceBtn").onclick=()=>{
+darkMode=false;
 
-recognition.start();
+}
+// ===============================
+// SAVE CHAT
+// ===============================
 
-};
+function saveChat(){
 
-recognition.onresult=(e)=>{
+localStorage.setItem(
 
-userInput.value=
-e.results[0][0].transcript;
+"chatHistory",
 
-sendMessage();
+JSON.stringify(chatHistory)
 
-};
+);
 
 }
 
-/* =========================
-WELCOME MESSAGE
-========================= */
+// ===============================
+// LOAD CHAT
+// ===============================
+
+function loadChat(){
+
+const data=
+
+localStorage.getItem(
+
+"chatHistory"
+
+);
+
+if(!data) return;
+
+chatHistory=
+
+JSON.parse(data);
+
+chatBox.innerHTML="";
+
+chatHistory.forEach(item=>{
 
 addMessage(
-"👋 Welcome! Ask me anything.",
+
+item.text,
+
+item.role==="user"
+
+?
+
+"user"
+
+:
+
 "bot"
+
 );
+
+});
+
+scrollBottom();
+
+}
+
+loadChat();
+// ===============================
+// NEW CHAT
+// ===============================
+
+function newChat(){
+
+chatHistory=[];
+
+chatBox.innerHTML="";
+
+saveChat();
+
+addMessage(
+
+"👋 New Chat Started!",
+
+"bot"
+
+);
+
+}
+
+// ===============================
+// CLEAR CHAT
+// ===============================
+
+function clearChat(){
+
+if(
+
+confirm(
+
+"Clear all chats?"
+
+)
+
+){
+
+newChat();
+
+}
+
+}
+// ===============================
+// EXPORT CHAT
+// ===============================
+
+exportBtn.onclick=()=>{
+
+const text=
+
+chatHistory
+
+.map(
+
+m=>`${m.role}: ${m.text}`
+
+)
+
+.join("\n\n");
+
+const blob=
+
+new Blob(
+
+[text],
+
+{
+
+type:"text/plain"
+
+}
+
+);
+
+const a=
+
+document.createElement("a");
+
+a.href=
+
+URL.createObjectURL(blob);
+
+a.download=
+
+"AI-Chat.txt";
+
+a.click();
+
+};
