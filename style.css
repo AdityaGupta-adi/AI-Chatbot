@@ -331,3 +331,19 @@ max-width:100%;
 }
 
 }
+
+
+.copyBtn{
+margin-top:12px;
+padding:8px 15px;
+background:#2563eb;
+color:#fff;
+border:none;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+}
+
+.copyBtn:hover{
+background:#1d4ed8;
+}
