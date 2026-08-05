@@ -618,3 +618,21 @@ scrollBottom();
 reader.readAsDataURL(file);
 
 });
+// ===============================
+// FILE UPLOAD
+// ===============================
+
+const fileInput = document.getElementById("fileInput");
+
+fileInput.addEventListener("change", (e) => {
+
+const file = e.target.files[0];
+
+if (!file) return;
+
+addMessage(
+`📄 File Selected:\n${file.name}`,
+"user"
+);
+
+});
