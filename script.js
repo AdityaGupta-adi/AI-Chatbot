@@ -110,7 +110,10 @@ userInput.style.height="55px";
 
 showTyping();
 
-const reply=await askGemini(text);
+const reply = await askGemini(text);
+
+// Typing animation ko kam se kam 700ms dikhane ke liye
+await new Promise(resolve => setTimeout(resolve, 700));
 
 const typing=document.getElementById("typing");
 
