@@ -510,3 +510,111 @@ a.download=
 a.click();
 
 };
+// ===============================
+// VOICE INPUT
+// ===============================
+
+if ("webkitSpeechRecognition" in window) {
+
+const recognition = new webkitSpeechRecognition();
+
+recognition.lang = "en-IN";
+
+recognition.continuous = false;
+
+recognition.interimResults = false;
+
+voiceBtn.onclick = () => {
+
+recognition.start();
+
+};
+
+recognition.onresult = (e) => {
+
+userInput.value = e.results[0][0].transcript;
+
+sendMessage();
+
+};
+
+recognition.onerror = () => {
+
+alert("Voice recognition failed.");
+
+};
+
+}
+// ===============================
+// VOICE OUTPUT
+// ===============================
+
+const synth = window.speechSynthesis;
+
+let speaking = false;
+
+document.getElementById("voiceOutputBtn").onclick = () => {
+
+if (chatHistory.length === 0) return;
+
+const last = [...chatHistory]
+.reverse()
+.find(m => m.role === "assistant");
+
+if (!last) return;
+
+if (speaking) {
+    synth.cancel();
+    speaking = false;
+    return;
+}
+
+const utter = new SpeechSynthesisUtterance(last.text);
+
+utter.lang = "en-US";
+utter.rate = 1;
+utter.pitch = 1;
+
+utter.onstart = () => speaking = true;
+
+utter.onend = () => speaking = false;
+
+synth.speak(utter);
+
+};
+// ===============================
+// IMAGE PREVIEW
+// ===============================
+
+const imageInput = document.getElementById("imageInput");
+
+imageInput.addEventListener("change", (e) => {
+
+const file = e.target.files[0];
+
+if (!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function () {
+
+const div = document.createElement("div");
+
+div.className = "userMessage";
+
+div.innerHTML = `
+<div class="avatar">🧑</div>
+<div class="message">
+<img src="${reader.result}" class="previewImage">
+</div>
+`;
+
+chatBox.appendChild(div);
+
+scrollBottom();
+
+};
+
+reader.readAsDataURL(file);
+
+});
