@@ -14,8 +14,8 @@ overflow:hidden;
 
 .app{
 display:flex;
-width:100%;
 height:100vh;
+overflow:hidden;
 }
 
 .sidebar{
@@ -28,10 +28,10 @@ border-right:1px solid #1f2937;
 }
 
 .chatArea{
-flex:1;
 display:flex;
 flex-direction:column;
-background:#0f172a;
+height:100vh;
+overflow:hidden;
 }
 
 header{
@@ -137,11 +137,7 @@ CHAT BOX
 .chatBox{
 flex:1;
 overflow-y:auto;
-padding:25px;
-display:flex;
-flex-direction:column;
-gap:20px;
-scroll-behavior:smooth;
+padding:20px;
 }
 
 /* =========================
@@ -254,12 +250,16 @@ INPUT AREA
 ========================= */
 
 .inputArea{
+position:sticky;
+bottom:0;
+width:100%;
 display:flex;
-align-items:flex-end;
-gap:12px;
-padding:20px;
-border-top:1px solid #1f2937;
+align-items:center;
+gap:10px;
+padding:12px;
 background:#111827;
+border-top:1px solid #333;
+z-index:100;
 }
 
 #userInput{
@@ -497,7 +497,23 @@ flex-shrink:0;
 }
 
 footer{
+flex-shrink:0;
 padding:10px;
 text-align:center;
-flex-shrink:0;
+}
+
+@media (max-width:768px){
+
+.sidebar{
+display:none;
+}
+
+.chatArea{
+width:100%;
+}
+
+.message{
+max-width:90%;
+}
+
 }
