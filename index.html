@@ -4,10 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Chatbot V3 Premium</title>
+<title>AI Chatbot V5 Premium</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -18,10 +17,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 
 <link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
+href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"/>
 
 </head>
 
@@ -29,13 +28,25 @@ href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
 
 <div class="app">
 
+<!-- Sidebar -->
+
 <aside class="sidebar">
 
 <div class="logo">
 
-<h2>🤖 AI Chatbot</h2>
+<div class="logo-icon">
 
-<span>Premium V3</span>
+🤖
+
+</div>
+
+<div>
+
+<h2>AI Chatbot</h2>
+
+<p>Premium V5</p>
+
+</div>
 
 </div>
 
@@ -46,6 +57,25 @@ href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
 New Chat
 
 </button>
+
+<div class="searchBox">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+type="text"
+id="searchChat"
+placeholder="Search Chats">
+
+</div>
+
+<div
+id="historyList"
+class="historyList">
+
+</div>
+
+<div class="sidebarBottom">
 
 <button id="exportBtn">
 
@@ -59,41 +89,65 @@ Export Chat
 
 <i class="fa-solid fa-trash"></i>
 
-Clear History
+Clear Chats
 
 </button>
 
-<div class="history">
+<button id="themeBtn">
 
-<h3>Recent Chats</h3>
+🌙 Theme
 
-<div id="historyList"></div>
+</button>
 
 </div>
 
 </aside>
 
-<main class="chat-area">
+<!-- Main -->
+
+<main class="chatArea">
 
 <header>
 
-<h2>
+<div>
 
-🤖 AI Assistant
+<h1>
 
-</h2>
+AI Assistant
 
-<button id="themeBtn">
+</h1>
 
-🌙
+<p>
+
+Powered by Gemini
+
+</p>
+
+</div>
+
+<div class="headerButtons">
+
+<button id="voiceOutputBtn">
+
+🔊
 
 </button>
 
+<button id="settingsBtn">
+
+⚙️
+
+</button>
+
+</div>
+
 </header>
 
-<div id="chatBox" class="chat-box">
+<section
+id="chatBox"
+class="chatBox">
 
-<div class="bot-message">
+<div class="botMessage">
 
 <div class="avatar">
 
@@ -103,63 +157,183 @@ Clear History
 
 <div class="message">
 
-Hello 👋 I'm your Premium AI Assistant.
+<h3>
+
+Hello Aditya 👋
+
+</h3>
+
+<p>
+
+Welcome to AI Chatbot V5 Premium.
+
+</p>
+
+<p>
+
+I can help with coding,
+projects,
+assignments,
+AI,
+web development,
+and much more.
+
+</p>
 
 </div>
 
 </div>
-</div>
+
+</section>
 
 <div class="suggestions">
 
 <button class="suggestion">
+
 💻 Explain JavaScript
+
 </button>
 
 <button class="suggestion">
-🌦️ Weather Today
+
+🚀 AI Project Ideas
+
 </button>
 
 <button class="suggestion">
-📝 Write an Email
+
+📧 Write Email
+
 </button>
 
 <button class="suggestion">
-💡 Project Ideas
+
+📝 Summarize Notes
+
 </button>
 
 </div>
 
-<div class="typing-area">
+<div class="inputArea">
+
+<label
+for="imageInput"
+class="iconButton">
+
+📷
+
+</label>
+
+<input
+type="file"
+id="imageInput"
+accept="image/*"
+hidden>
+
+<label
+for="fileInput"
+class="iconButton">
+
+📎
+
+</label>
+
+<input
+type="file"
+id="fileInput"
+accept=".pdf,.docx,.txt"
+hidden>
 
 <textarea
+
 id="userInput"
-placeholder="Message AI Assistant..."
-rows="1"></textarea>
 
-<div class="action-buttons">
+rows="1"
 
-<button id="voiceBtn" title="Voice Input">
+placeholder="Ask anything...">
+
+</textarea>
+
+<button
+id="voiceBtn">
+
 🎤
+
 </button>
 
-<button id="sendBtn" title="Send">
+<button
+id="sendBtn">
+
 <i class="fa-solid fa-paper-plane"></i>
+
 </button>
 
 </div>
 
-</div>
+<footer>
 
-<footer class="footer">
-
-<p>⚡ Powered by Gemini 3.6 Flash</p>
-
-<p>Made with 🤍 by Aditya Gupta</p>
+AI responses may contain mistakes.
+Verify important information.
 
 </footer>
 
 </main>
+
+</div>
+
+<!-- Settings Modal -->
+
+<div
+class="settingsModal"
+id="settingsModal">
+
+<div class="settingsContent">
+
+<h2>
+
+Settings
+
+</h2>
+
+<div class="setting">
+
+<label>
+
+Dark Theme
+
+</label>
+
+<input
+type="checkbox"
+id="darkToggle">
+
+</div>
+
+<div class="setting">
+
+<label>
+
+Typing Speed
+
+</label>
+
+<input
+type="range"
+id="typingSpeed"
+min="5"
+max="40"
+value="15">
+
+</div>
+
+<button
+id="closeSettings">
+
+Close
+
+</button>
+
+</div>
 
 </div>
 
