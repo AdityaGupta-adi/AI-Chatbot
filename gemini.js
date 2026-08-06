@@ -28,7 +28,7 @@ const API_URL =
 // Ask Gemini
 // =======================================
 
-async function askGemini(promptText){
+async function askGemini(chatHistory){
 
 try{
 
@@ -50,17 +50,21 @@ headers:{
 
 },
 
-body:JSON.stringify({
+body: JSON.stringify({
 
 model:"gemini-3.6-flash",
 
-input:promptText
+input: chatHistory.map(m => ({
 
+role: m.role,
+
+content: m.text
+
+}))
 })
-
 }
-
 );
+}}
 
 const data=
 
