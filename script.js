@@ -2,6 +2,7 @@
 // AI Chatbot V5 Premium
 // Core Setup
 // ===============================
+let selectedImage = null;
 
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
@@ -634,5 +635,46 @@ addMessage(
 `📄 File Selected:\n${file.name}`,
 "user"
 );
+
+});
+
+// ===============================
+// IMAGE UPLOAD
+// ===============================
+
+let selectedImage = null;
+
+const imageInput = document.getElementById("imageInput");
+
+imageInput.addEventListener("change", (e) => {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+
+        selectedImage = reader.result;
+
+        const div = document.createElement("div");
+
+        div.className = "userMessage";
+
+        div.innerHTML = `
+        <div class="avatar">🧑</div>
+        <div class="message">
+            <img src="${selectedImage}" class="previewImage">
+        </div>
+        `;
+
+        chatBox.appendChild(div);
+
+        scrollBottom();
+
+    };
+
+    reader.readAsDataURL(file);
 
 });
