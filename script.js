@@ -92,7 +92,7 @@ showTyping();
 
 try{
 
-const reply=await askGemini(text);
+const reply = await askGemini(chatHistory);
 
 removeTyping();
 
