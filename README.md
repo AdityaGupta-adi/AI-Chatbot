@@ -21,4 +21,4 @@ A modern AI Chatbot built using HTML, CSS and JavaScript.
 ## 👨‍💻 Author
 
 Aditya Gupta
-BCA Student • COER University
+BCA Student • COER University • Roorkee
