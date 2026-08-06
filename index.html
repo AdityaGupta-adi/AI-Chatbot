@@ -4,23 +4,33 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Chatbot V5 Premium</title>
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>AI Chatbot V6</title>
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+href="style.css">
 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"/>
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css">
 
 </head>
 
@@ -28,13 +38,13 @@ href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"/>
 
 <div class="app">
 
-<!-- Sidebar -->
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
 <div class="logo">
 
-<div class="logo-icon">
+<div class="logoIcon">
 
 🤖
 
@@ -42,15 +52,23 @@ href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"/>
 
 <div>
 
-<h2>AI Chatbot</h2>
+<h2>
 
-<p>Premium V5</p>
+AI Chatbot
+
+</h2>
+
+<p>
+
+Premium V6
+
+</p>
 
 </div>
 
 </div>
 
-<button id="newChatBtn">
+<button id="newChat">
 
 <i class="fa-solid fa-plus"></i>
 
@@ -63,71 +81,51 @@ New Chat
 <i class="fa-solid fa-magnifying-glass"></i>
 
 <input
-type="text"
-id="searchChat"
+id="searchInput"
 placeholder="Search Chats">
 
 </div>
 
 <div
-id="historyList"
-class="historyList">
+id="history"
+class="history">
 
 </div>
 
-<div class="sidebarBottom">
+<div class="bottomButtons">
 
-<button id="exportBtn">
+<button id="exportChat">
 
-<i class="fa-solid fa-download"></i>
-
-Export Chat
+Export
 
 </button>
 
-<button id="clearBtn">
+<button id="themeToggle">
 
-<i class="fa-solid fa-trash"></i>
-
-Clear Chats
-
-</button>
-
-<button id="themeBtn">
-
-🌙 Theme
+🌙
 
 </button>
 
 </div>
 
 </aside>
+<!-- MAIN -->
 
-<!-- Main -->
+<main class="main">
 
-<main class="chatArea">
-
-<header>
+<header class="topBar">
 
 <div>
 
-<h1>
+<h1>AI Assistant</h1>
 
-AI Assistant
-
-</h1>
-
-<p>
-
-Powered by Gemini
-
-</p>
+<p>Powered by Gemini</p>
 
 </div>
 
-<div class="headerButtons">
+<div class="topButtons">
 
-<button id="voiceOutputBtn">
+<button id="voiceOutput">
 
 🔊
 
@@ -159,24 +157,19 @@ class="chatBox">
 
 <h3>
 
-Hello Aditya 👋
+Hello 👋
 
 </h3>
 
 <p>
 
-Welcome to AI Chatbot V5 Premium.
+Welcome to AI Chatbot V6.
 
 </p>
 
 <p>
 
-I can help with coding,
-projects,
-assignments,
-AI,
-web development,
-and much more.
+How can I help you today?
 
 </p>
 
@@ -190,13 +183,19 @@ and much more.
 
 <button class="suggestion">
 
-💻 Explain JavaScript
+💻 JavaScript
 
 </button>
 
 <button class="suggestion">
 
-🚀 AI Project Ideas
+🚀 AI Projects
+
+</button>
+
+<button class="suggestion">
+
+📄 Summarize Notes
 
 </button>
 
@@ -206,19 +205,14 @@ and much more.
 
 </button>
 
-<button class="suggestion">
-
-📝 Summarize Notes
-
-</button>
-
 </div>
+<!-- INPUT AREA -->
 
 <div class="inputArea">
 
 <label
 for="imageInput"
-class="iconButton">
+class="iconBtn">
 
 📷
 
@@ -232,16 +226,16 @@ hidden>
 
 <label
 for="fileInput"
-class="iconButton">
+class="iconBtn">
 
-📎
+📄
 
 </label>
 
 <input
 type="file"
 id="fileInput"
-accept=".pdf,.docx,.txt"
+accept=".pdf,.txt,.doc,.docx"
 hidden>
 
 <textarea
@@ -272,8 +266,7 @@ id="sendBtn">
 
 <footer>
 
-AI responses may contain mistakes.
-Verify important information.
+AI may make mistakes. Verify important information.
 
 </footer>
 
@@ -281,13 +274,13 @@ Verify important information.
 
 </div>
 
-<!-- Settings Modal -->
+<!-- SETTINGS -->
 
 <div
-class="settingsModal"
-id="settingsModal">
+id="settingsModal"
+class="settingsModal">
 
-<div class="settingsContent">
+<div class="settingsCard">
 
 <h2>
 
@@ -295,27 +288,9 @@ Settings
 
 </h2>
 
-<div class="setting">
-
-<label>
-
-Dark Theme
-
-</label>
-
-<input
-type="checkbox"
-id="darkToggle">
-
-</div>
-
-<div class="setting">
-
 <label>
 
 Typing Speed
-
-</label>
 
 <input
 type="range"
@@ -324,7 +299,18 @@ min="5"
 max="40"
 value="15">
 
-</div>
+</label>
+
+<label>
+
+Dark Theme
+
+<input
+type="checkbox"
+id="darkMode"
+checked>
+
+</label>
 
 <button
 id="closeSettings">
